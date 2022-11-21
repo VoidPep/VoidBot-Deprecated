@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable brace-style */
 /* eslint-disable object-curly-spacing */
 /* eslint-disable no-trailing-spaces */
@@ -25,13 +26,23 @@ client.commands = new Collection();
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 client.once(Events.ClientReady, c => {
+	console.log(`=================================================`);
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
-client.on('messageCreate', (message) => {
+client.on('messageCreate', async (message) => {
 	console.log(message.content);
 });
-client.on('messageDelete', (message) => {
+client.on('messageDelete', async (message) => {
 	console.log(`Uma mensagem foi apagada por ${message.author.tag}\nconteúdo da mensagem:\n${message.content}`);
+});
+client.on('interactionCreate', async (interaction) => {
+	if (interaction.isChatInputCommand()) {
+		if (interaction.commandName === 'ping') {
+			interaction.reply({ content: 'Pong.' });
+		}
+	} else { 
+		return;
+	}
 });
 
 async function main() {
@@ -40,13 +51,10 @@ async function main() {
 			name: 'ping',
 			description: 'replies with pong',
 		},
-		{
-			name: 'uwu',
-			description: 'teste',
-		},
 	];
 	
 	try {
+		console.log(`=================================================`);
 		console.log('\nstarted refreshing aplication slash commands\n');
 		await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
 			body: commands,
