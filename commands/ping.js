@@ -1,8 +1,11 @@
-/* eslint-disable indent */
+/* eslint-disable indent *//* eslint-disable no-empty-function *//* eslint-disable no-trailing-spaces *//* eslint-disable indent */
+const { SlashCommandBuilder } = require('discord.js');
+
 module.exports = {
-    name: 'ping',
-    description: 'Responde com pong!',
-    execute(message) {
-        message.reply('🏓 Pong');
-    },
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Responde com pong!'),
+	async execute(interaction) {
+		await interaction.reply('Pong 🏓');
+	},
 };
