@@ -1,31 +1,37 @@
-/* eslint-disable no-mixed-spaces-and-tabs *//* eslint-disable no-unused-vars */
+/* eslint-disable no-mixed-spaces-and-tabs */
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-/*
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+// const wait = require('node:timers/promises').setTimeout;
 
- module.exports = {
-     name: 'clear',
-     description: 'limpa mensagens do chat',
-     async execute(message, args) {
-         if (!args[0]) return message.reply('Quantas mensagens deseja apagar? (0 para nenhuma)');
-         if (isNaN(args[0])) return message.reply('Por favor insira um numero válido 😜');
+module.exports = {
+    data: new SlashCommandBuilder()
+    .setName('clear')
+    .setDescription('Limpa mensagens no canal atual')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .addIntegerOption(option => 
+        option
+            .setName('quant')
+            .setDescription('Quantidade de mensagens a ser deletada')
+            .setRequired(true)
+            .setMinValue(1)
+            .setMaxValue(100)),
+            
+	// eslint-disable-next-line no-unused-vars
+	run: async ({ interaction, client }) => {
+        const quant = interaction.options.getInteger('quant');
+        const embed = new EmbedBuilder()
+            .setAuthor({ 
+                name: `${interaction.user.tag}`,
+                iconURL: interaction.user.displayAvatarURL() })
+            .setColor(0x0099FF)
+            .setTimestamp(Date.now())
+            .setDescription(`Mensagens apagadas: ${quant}`);
 
-         if (args[0] > 100) return message.reply('Você não pode deletar mais de 100 mensagens');
-         if (args[0] < 1) return message.reply('Nenhuma mensagem foi deletada');
-
-         await message.channel.messages.fetch({ limit: args[0] }).then(messages => {
-             message.channel.bulkDelete(messages);
-         });
-     },
- };
-*/
-
-  module.exports = {
-  	data: new SlashCommandBuilder()
-  		.setName('clear')
-  		.setDescription('limpa mensagens do chat'),
-  	async execute(interaction) {
- 		// const quant = interaction.options.getInteger();
-        // console.log(quant);
-  	},
-  };
+        await interaction.channel.messages.fetch({ limit: quant }).then(messages => {
+            interaction.channel.bulkDelete(messages);
+        });
+        interaction.reply({ 
+            embeds: [ embed ],
+        });
+	},
+};

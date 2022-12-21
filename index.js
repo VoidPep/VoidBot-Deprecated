@@ -1,20 +1,34 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-mixed-spaces-and-tabs *//* eslint-disable no-unused-vars */
 
 // ====================== constants ================================================
 const { Client, GatewayIntentBits, Collection, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
+const { Player } = require('discord-player');
+const { token, clientId } = require('./config.json');
+
 const fs = require('node:fs');
 const path = require('node:path');
-require('dotenv/config');
-// ===================== dotenv configs ===============================================
-const TOKEN = process.env.TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
-const commands = [];
-// ====================== instantiators ===============================================
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages,	GatewayIntentBits.MessageContent] });
-const rest = new REST({ version: '10' }).setToken(TOKEN);
+
+let commands = [];
+// ====================== instantiators =============================================
+const client = new Client({ 
+	intents: [
+		GatewayIntentBits.Guilds, 
+		GatewayIntentBits.GuildMessages, 
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
+	] });
+module.exports = client;
+const rest = new REST({ version: '10' }).setToken(token);
 client.categories = fs.readdirSync(`./commands/`);
 client.commands = new Collection();
+client.player = new Player(client, {
+    ytdlOptions: {
+        quality: "highestaudio",
+        highWaterMark: 1 << 25,
+    },
+});
 
 // ===================== Loop for interaction ======================================
 const commandsPath = path.join(__dirname, 'commands');
@@ -41,13 +55,13 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-// ========================== slash starter ============================================
+// ========================== slash cmd reg ===========================================
 (async () => {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		const data = await rest.put(
-			Routes.applicationCommands(CLIENT_ID),
+			Routes.applicationCommands(clientId),
 			{ body: commands },
 		);
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
@@ -56,4 +70,4 @@ for (const file of eventFiles) {
 		console.error(error);
 	}
 })();
-client.login(TOKEN);
+client.login(token);
