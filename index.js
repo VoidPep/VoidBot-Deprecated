@@ -12,22 +12,23 @@ const path = require('node:path');
 
 let commands = [];
 // ====================== instantiators =============================================
-const client = new Client({ 
+const client = new Client({
 	intents: [
-		GatewayIntentBits.Guilds, 
-		GatewayIntentBits.GuildMessages, 
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildVoiceStates,
-	] });
+	],
+});
 module.exports = client;
 const rest = new REST({ version: '10' }).setToken(token);
 client.categories = fs.readdirSync(`./commands/`);
 client.commands = new Collection();
 client.player = new Player(client, {
-    ytdlOptions: {
-        quality: "highestaudio",
-        highWaterMark: 1 << 25,
-    },
+	ytdlOptions: {
+		quality: "highestaudio",
+		highWaterMark: 1 << 25,
+	},
 });
 
 // ===================== Loop for interaction ======================================
@@ -37,7 +38,7 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
-	
+
 	client.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 
