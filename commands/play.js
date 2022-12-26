@@ -32,7 +32,7 @@ module.exports = {
                         .setRequired(true)))
         .addSubcommand((subcommand) =>
             subcommand.setName('loop')
-                .setDescription('coloca em loop a música atual')
+                .setDescription('alterna a repetição da queue')
                 .addIntegerOption(option =>
                     option
                         .setName('args')
@@ -48,7 +48,7 @@ module.exports = {
         if (!interaction.member.voice.channel) {
             let embedErr = new EmbedBuilder()
                 .setColor(0x0099FF)
-                .setDescription('Você precisa entrar em um canal de voz para usar esse comando :/');
+                .setDescription('❌ Você precisa entrar em um canal de voz para usar esse comando :/');
             return await interaction.editReply({
                 embeds: [embedErr],
             });
@@ -63,7 +63,7 @@ module.exports = {
                 searchEngine: QueryType.YOUTUBE_VIDEO,
             });
             if (result.length === 0)
-                return interaction.editReply("Sem resultados :/");
+                return interaction.editReply("❌ Sem resultados :/");
 
             const song = result.tracks[0];
             await queue.addTrack(song);
@@ -80,7 +80,7 @@ module.exports = {
                 searchEngine: QueryType.YOUTUBE_PLAYLIST,
             });
             if (result.length === 0)
-                return interaction.editReply("Sem resultados :/");
+                return interaction.editReply("❌ Sem resultados :/");
 
             const playlist = result.playlist;
             await queue.addTracks(result.tracks);
@@ -93,7 +93,7 @@ module.exports = {
                 searchEngine: QueryType.AUTO,
             });
             if (result.length === 0)
-                return interaction.editReply("Sem resultados :/");
+                return interaction.editReply("❌ Sem resultados :/");
 
             const song = result.tracks[0];
             await queue.addTrack(song);
@@ -107,14 +107,22 @@ module.exports = {
 
         let args = interaction.options.getInteger('args');
         if (interaction.options.getSubcommand() === 'loop') {
-            queue.setRepeatMode(args);
-            if (args == 1)
-                embed.setDescription("Loop ativado");
+            if (args == 1) {
+                queue.setRepeatMode(1);
+                embed
+                    .setDescription('🔁 Loop ativado')
+                    .setColor('Green');
+            }
             else
-                embed.setDescription("Loop desativado");
+                if (args == 0) {
+                    queue.setRepeatMode(0);
+                    embed
+                        .setDescription('🔁 Loop desativado')
+                        .setColor('Red');
+                }
+            await interaction.editReply({
+                embeds: [embed],
+            });
         }
-        await interaction.editReply({
-            embeds: [embed],
-        });
     },
 };
