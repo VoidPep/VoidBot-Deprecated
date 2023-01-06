@@ -6,8 +6,14 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('quit')
-        .setDescription('Limpa a lista de reprodução'),
+        .setName('skipto')
+        .setDescription('Pula para uma música da queue pelo seu número na track')
+        .addNumberOption((option) =>
+            option
+                .setName('pos')
+                .setDescription('posição da música na fila')
+                .setMinValue(1)
+                .setRequired(true)),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
         const queue = client.player.getQueue(interaction.guildId);
@@ -19,11 +25,26 @@ module.exports = {
                     .setColor(0x0099FF),
             ],
         });
-        queue.destroy();
+
+        const trackNum = interaction.options.getNumber("pos");
+        const currentSong = queue.current;
+
+        if (trackNum > queue.tracks.length) {
+            await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription("❌ Posição da fila inválida")
+                        .setColor("Red"),
+                ],
+            });
+        }
+
+        queue.skipTo(trackNum - 1);
+
         await interaction.editReply({
             embeds: [
                 new EmbedBuilder()
-                    .setDescription("Adeus 👋")
+                    .setDescription(`${currentSong} foi pulada para música de numero ${trackNum}`)
                     .setColor(0x0099FF),
             ],
         });

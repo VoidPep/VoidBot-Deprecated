@@ -15,6 +15,5 @@ module.exports = {
 			return;
 		}
 		await command.run({ client, interaction });
-
 	},
 };

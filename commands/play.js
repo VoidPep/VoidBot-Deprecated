@@ -29,17 +29,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option.setName('name')
                         .setDescription('nome da música')
-                        .setRequired(true)))
-        .addSubcommand((subcommand) =>
-            subcommand.setName('loop')
-                .setDescription('alterna a repetição da queue')
-                .addIntegerOption(option =>
-                    option
-                        .setName('args')
-                        .setDescription('1 para ativar o loop, 0 para desativar')
-                        .setRequired(true)
-                        .setMinValue(0)
-                        .setMaxValue(1))),
+                        .setRequired(true))),
     run: async ({ client, interaction }) => {
 
         await interaction.deferReply();
@@ -105,24 +95,8 @@ module.exports = {
         }
         if (!queue.playing) await queue.play();
 
-        let args = interaction.options.getInteger('args');
-        if (interaction.options.getSubcommand() === 'loop') {
-            if (args == 1) {
-                queue.setRepeatMode(1);
-                embed
-                    .setDescription('🔁 Loop ativado')
-                    .setColor('Green');
-            }
-            else
-                if (args == 0) {
-                    queue.setRepeatMode(0);
-                    embed
-                        .setDescription('🔁 Loop desativado')
-                        .setColor('Red');
-                }
-            await interaction.editReply({
-                embeds: [embed],
-            });
-        }
+        await interaction.editReply({
+            embeds: [embed],
+        });
     },
 };

@@ -6,8 +6,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('quit')
-        .setDescription('Limpa a lista de reprodução'),
+        .setName('pause')
+        .setDescription('Pausa a musica atual'),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
         const queue = client.player.getQueue(interaction.guildId);
@@ -19,11 +19,11 @@ module.exports = {
                     .setColor(0x0099FF),
             ],
         });
-        queue.destroy();
+        queue.setPaused(true);
         await interaction.editReply({
             embeds: [
                 new EmbedBuilder()
-                    .setDescription("Adeus 👋")
+                    .setDescription("Musica pausada, use `/resume` para retornar")
                     .setColor(0x0099FF),
             ],
         });
