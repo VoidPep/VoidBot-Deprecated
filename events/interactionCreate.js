@@ -1,4 +1,3 @@
-/* eslint-disable brace-style */
 const { Events } = require('discord.js');
 const client = require('..');
 

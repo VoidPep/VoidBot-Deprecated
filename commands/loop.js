@@ -1,7 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-empty */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable indent *//* eslint-disable no-empty-function *//* eslint-disable no-trailing-spaces *//* eslint-disable indent */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -27,10 +23,10 @@ module.exports = {
             ],
         });
 
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setColor(0x0099FF);
 
-        let args = interaction.options.getInteger('args');
+        const args = interaction.options.getInteger('args');
 
         if (interaction.options.getSubcommand() === 'loop') {
             if (args == 1) {

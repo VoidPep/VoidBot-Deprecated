@@ -1,7 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-empty */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable indent *//* eslint-disable no-empty-function *//* eslint-disable no-trailing-spaces *//* eslint-disable indent */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -17,7 +13,7 @@ module.exports = {
                 .setMaxValue(100)),
 
     run: async ({ client, interaction }) => {
-        let queue = client.player.getQueue(interaction.guildId);
+        const queue = client.player.getQueue(interaction.guildId);
 
         if (!queue) return await interaction.editReply({
             embeds: [
@@ -28,9 +24,9 @@ module.exports = {
         });
 
         await interaction.deferReply();
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setColor(0x0099FF);
-        let args = interaction.options.getInteger('valor');
+        const args = interaction.options.getInteger('valor');
 
 
         queue.setVolume(args);

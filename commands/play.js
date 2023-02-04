@@ -1,7 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-empty */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable indent *//* eslint-disable no-empty-function *//* eslint-disable no-trailing-spaces *//* eslint-disable indent */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { QueryType } = require('discord-player');
 
@@ -33,10 +29,10 @@ module.exports = {
     run: async ({ client, interaction }) => {
 
         await interaction.deferReply();
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setColor(0x0099FF);
         if (!interaction.member.voice.channel) {
-            let embedErr = new EmbedBuilder()
+            const embedErr = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setDescription('❌ Você precisa entrar em um canal de voz para usar esse comando :/');
             return await interaction.editReply({
@@ -47,7 +43,7 @@ module.exports = {
         if (!queue.connection) await queue.connect(interaction.member.voice.channel);
 
         if (interaction.options.getSubcommand() === "music") {
-            let url = interaction.options.getString("url");
+            const url = interaction.options.getString("url");
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.YOUTUBE_VIDEO,

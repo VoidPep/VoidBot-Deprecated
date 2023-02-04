@@ -1,7 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-mixed-spaces-and-tabs *//* eslint-disable no-unused-vars */
-
-// ====================== constants ================================================
 const { Client, GatewayIntentBits, Collection, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Player } = require('discord-player');
@@ -10,8 +6,7 @@ const { token, clientId } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
-let commands = [];
-// ====================== instantiators =============================================
+const commands = [];
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -31,7 +26,6 @@ client.player = new Player(client, {
 	},
 });
 
-// ===================== Loop for interaction ======================================
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
@@ -43,7 +37,6 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 
 }
-// ===================== Loop for event files =========================================
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -56,7 +49,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-// ========================== slash cmd reg ===========================================
 (async () => {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);

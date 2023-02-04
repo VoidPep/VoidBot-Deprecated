@@ -1,7 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-empty */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable indent *//* eslint-disable no-empty-function *//* eslint-disable no-trailing-spaces *//* eslint-disable indent */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -17,7 +13,7 @@ module.exports = {
         const queue = client.player.getQueue(interaction.guildId);
 
         if (!queue || !queue.playing) {
-            let embedErr = new EmbedBuilder()
+            const embedErr = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setDescription('Não há nenhuma música na lista de reprodução no momento :/');
             return await interaction.editReply({
@@ -28,7 +24,7 @@ module.exports = {
         const page = (interaction.options.getNumber("page") || 1) - 1;
 
         if (page > totalPages) {
-            let embedErr = new EmbedBuilder()
+            const embedErr = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setDescription(`Perdão. só exite um total de ${totalPages} páginas na lista de reprodução`);
             return await interaction.editReply({
