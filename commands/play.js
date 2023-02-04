@@ -13,11 +13,18 @@ module.exports = {
                         .setDescription('url da playlist')
                         .setRequired(true)))
         .addSubcommand((subcommand) =>
+            subcommand.setName("music")
+                .setDescription('Toca uma única singular música')
+                .addStringOption((option) =>
+                    option.setName('url')
+                        .setDescription('url da música')
+                        .setRequired(true)))
+        .addSubcommand((subcommand) =>
             subcommand.setName('search')
                 .setDescription('Pesquisa pelo nome da música')
                 .addStringOption((option) =>
-                    option.setName('url')
-                        .setDescription('nome/url da música')
+                    option.setName('name')
+                        .setDescription('nome da música')
                         .setRequired(true))),
     run: async ({ client, interaction }) => {
 
@@ -35,7 +42,24 @@ module.exports = {
         const queue = await client.player.createQueue(interaction.guild);
         if (!queue.connection) await queue.connect(interaction.member.voice.channel);
 
-        if (interaction.options.getSubcommand() === 'playlist') {
+        if (interaction.options.getSubcommand() === "music") {
+            const url = interaction.options.getString("url");
+            const result = await client.player.search(url, {
+                requestedBy: interaction.user,
+                searchEngine: QueryType.YOUTUBE_VIDEO,
+            });
+            if (result.length === 0)
+                return interaction.editReply("❌ Sem resultados :/");
+
+            const song = result.tracks[0];
+            await queue.addTrack(song);
+            embed
+                .setDescription(`**[${song.title}](${song.url})**\n Foi adicionado à lista de reprodução`)
+                .setThumbnail(song.thumbnail)
+                .setFooter({ text: `Duração: ${song.duration}` });
+
+
+        } else if (interaction.options.getSubcommand() === 'playlist') {
             const url = interaction.options.getString("url");
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
