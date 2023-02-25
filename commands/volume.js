@@ -7,7 +7,7 @@ module.exports = {
         .addIntegerOption(option =>
             option
                 .setName('valor')
-                .setDescription('Volume do bot')
+                .setDescription('Volume do bot em porcentagem')
                 .setRequired(true)
                 .setMinValue(0)
                 .setMaxValue(100)),
@@ -28,12 +28,11 @@ module.exports = {
             .setColor(0x0099FF);
         const args = interaction.options.getInteger('valor');
 
-
-        queue.setVolume(args);
+        queue.setVolume(args / 10);
         embed
             .setColor('Blue')
             .setTitle('Volume ajustado')
-            .setDescription(`🔊 Volume ajustado para: ${args}`);
+            .setDescription(`🔊 Volume ajustado para: ${args}%`);
 
         await interaction.editReply({
             embeds: [embed],

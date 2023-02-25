@@ -2,8 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('quit')
-        .setDescription('Limpa a lista de reprodução'),
+        .setName('leave')
+        .setDescription('Limpa a lista de reprodução e vai embora'),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
         const queue = client.player.getQueue(interaction.guildId);

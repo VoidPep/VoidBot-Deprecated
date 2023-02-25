@@ -24,6 +24,7 @@ client.player = new Player(client, {
 		quality: "highestaudio",
 		highWaterMark: 1 << 25,
 	},
+	smoothVolume: false,
 });
 
 const commandsPath = path.join(__dirname, 'commands');
