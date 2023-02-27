@@ -1,16 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+let loopEnabled = false;
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('loop')
-        .setDescription('alterna a repetição da queue')
-        .addIntegerOption(option =>
-            option
-                .setName('args')
-                .setDescription('1 para ativar o loop, 0 para desativar')
-                .setRequired(true)
-                .setMinValue(0)
-                .setMaxValue(1)),
+        .setDescription('Habilita ou desabilita o loop'),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
         const queue = client.player.getQueue(interaction.guildId);
@@ -22,34 +16,29 @@ module.exports = {
                     .setColor(0x0099FF),
             ],
         });
-
         const embed = new EmbedBuilder()
             .setColor(0x0099FF);
 
-        const args = interaction.options.getInteger('args');
-
-        if (args === 1) {
-            if (args == 1) {
-                console.log(queue.repeatMode);
-                queue.setRepeatMode(1);
-                embed
-                    .setDescription('🔁 Loop ativado')
-                    .setColor('Green')
-                    .setTimestamp()
-                    .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
-            }
-            else
-                if (args == 0) {
-                    queue.setRepeatMode(0);
-                    embed
-                        .setDescription('🔁 Loop desativado')
-                        .setColor('Red')
-                        .setTimestamp()
-                        .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
-                }
-            await interaction.editReply({
-                embeds: [embed],
-            });
+        if (!loopEnabled) {
+            queue.setRepeatMode(1);
+            embed
+                .setDescription('🔁 Loop ativado')
+                .setColor('Green')
+                .setTimestamp()
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
+            loopEnabled = !loopEnabled;
+        } else if (loopEnabled) {
+            queue.setRepeatMode(0);
+            embed
+                .setDescription('🔁 Loop desativado')
+                .setColor('Red')
+                .setTimestamp()
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
+            loopEnabled = !loopEnabled;
         }
+
+        await interaction.editReply({
+            embeds: [embed],
+        });
     },
 };

@@ -18,7 +18,9 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setDescription("❌ Sem músicas na lista de reprodução")
-                    .setColor(0x0099FF),
+                    .setColor(0x0099FF)
+                    .setTimestamp()
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` }),
             ],
         });
 
@@ -30,7 +32,9 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription("❌ Posição da fila inválida")
-                        .setColor("Red"),
+                        .setColor("Red")
+                        .setTimestamp()
+                        .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` }),
                 ],
             });
         }

@@ -24,7 +24,9 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setDescription(`${currentSong} foi pulada!`)
-                    .setColor(0x0099FF),
+                    .setColor(0x0099FF)
+                    .setTimestamp()
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` }),
             ],
         });
     },
