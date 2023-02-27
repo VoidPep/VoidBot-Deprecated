@@ -28,19 +28,24 @@ module.exports = {
 
         const args = interaction.options.getInteger('args');
 
-        if (interaction.options.getSubcommand() === 'loop') {
+        if (args === 1) {
             if (args == 1) {
+                console.log(queue.repeatMode);
                 queue.setRepeatMode(1);
                 embed
                     .setDescription('🔁 Loop ativado')
-                    .setColor('Green');
+                    .setColor('Green')
+                    .setTimestamp()
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
             }
             else
                 if (args == 0) {
                     queue.setRepeatMode(0);
                     embed
                         .setDescription('🔁 Loop desativado')
-                        .setColor('Red');
+                        .setColor('Red')
+                        .setTimestamp()
+                        .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
                 }
             await interaction.editReply({
                 embeds: [embed],

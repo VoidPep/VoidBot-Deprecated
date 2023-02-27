@@ -26,17 +26,21 @@ module.exports = {
         if (interaction.options.getInteger('valor') == null) {
             embed
                 .setTitle('Volume atual')
-                .setDescription(`🔊 O volume atual da queue é: ${queue.volume * 10}%`);
+                .setDescription(`🔊 O volume atual da queue é: ${queue.volume * 10}%`)
+                .setTimestamp()
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
         } else if (interaction.options.getInteger('valor')) {
             const args = interaction.options.getInteger('valor');
             queue.setVolume(args / 10);
             embed
                 .setTitle('Volume ajustado')
-                .setDescription(`🔊 Volume ajustado para: ${args}%`);
+                .setDescription(`🔊 Volume ajustado para: ${args}%`)
+                .setTimestamp()
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` });
         } else {
             embed
                 .setTitle("Erro")
-                .setDescription(`Deu erro`);
+                .setDescription(`Algo aconteceu :/`);
             console.log(interaction);
         }
 

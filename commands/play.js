@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-unused-vars */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { QueryType, Playlist } = require('discord-player');
+const { QueryType } = require('discord-player');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,6 +15,8 @@ module.exports = {
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
         const embed = new EmbedBuilder()
+            .setTimestamp()
+            .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` })
             .setColor(0x0099FF);
         if (!interaction.member.voice.channel) {
             const embedErr = new EmbedBuilder()
@@ -54,8 +56,7 @@ module.exports = {
                     ],
                 });
             }
-        }
-        if (query.match(/^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]{11}.*$/)) {
+        } else if (query.match(/^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]{11}.*$/)) {
             try {
                 result = await client.player.search(query, {
                     requestedBy: interaction.user,
@@ -71,8 +72,7 @@ module.exports = {
                     ],
                 });
             }
-        }
-        else if (query.match(/^https?:\/\/open\.spotify\.com\/.*$/)) {
+        } else if (query.match(/^https?:\/\/open\.spotify\.com\/.*$/)) {
             try {
                 result = await client.player.search(query, {
                     requestedBy: interaction.user,
@@ -88,8 +88,7 @@ module.exports = {
                     ],
                 });
             }
-        }
-        else {
+        } else {
             try {
                 result = await client.player.search(query, {
                     requestedBy: interaction.user,

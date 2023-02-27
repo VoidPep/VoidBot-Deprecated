@@ -20,7 +20,9 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setDescription("Adeus 👋")
-                    .setColor(0x0099FF),
+                    .setColor(0x0099FF)
+                    .setTimestamp()
+                    .setThumbnail(`${client.user.avatarUrl()}`),
             ],
         });
     },

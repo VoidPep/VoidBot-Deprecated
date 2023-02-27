@@ -35,6 +35,11 @@ client.player = new Player(client, {
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+client.on('ready', () => {
+	client.user.setActivity('VoidBot', { type: 2 });
+	client.user.setPresence({ status: 'online' });
+});
+
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
@@ -69,4 +74,5 @@ for (const file of eventFiles) {
 		console.error(error);
 	}
 })();
+
 client.login(token);
