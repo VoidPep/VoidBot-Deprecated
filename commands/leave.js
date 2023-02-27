@@ -12,17 +12,19 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setDescription("❌ Sem músicas na lista de reprodução")
-                    .setColor(0x0099FF),
+                    .setColor(0x0099FF)
+                    .setTimestamp(),
             ],
         });
         queue.destroy();
         await interaction.editReply({
             embeds: [
                 new EmbedBuilder()
-                    .setDescription("Adeus 👋")
+                    .setTitle("Adeus 👋")
+                    .setDescription("Até outra hora")
                     .setColor(0x0099FF)
                     .setTimestamp()
-                    .setThumbnail(`${client.user.avatarUrl()}`),
+                    .setThumbnail(`${client.user.avatarURL()}`),
             ],
         });
     },
