@@ -8,31 +8,37 @@ module.exports = {
             option
                 .setName('valor')
                 .setDescription('Volume do bot em porcentagem')
-                .setRequired(true)
+                .setRequired(false)
                 .setMinValue(0)
                 .setMaxValue(100)),
 
     run: async ({ client, interaction }) => {
         const queue = client.player.getQueue(interaction.guildId);
-
-        if (!queue) return await interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription("❌ Sem músicas na lista de reprodução")
-                    .setColor(0x0099FF),
-            ],
-        });
-
         await interaction.deferReply();
         const embed = new EmbedBuilder()
-            .setColor(0x0099FF);
-        const args = interaction.options.getInteger('valor');
+            .setColor('Blue');
 
-        queue.setVolume(args / 10);
-        embed
-            .setColor('Blue')
-            .setTitle('Volume ajustado')
-            .setDescription(`🔊 Volume ajustado para: ${args}%`);
+        if (!queue) return await interaction.editReply({
+            embeds: [embed
+                .setDescription("❌ Sem músicas na lista de reprodução"),
+            ],
+        });
+        if (interaction.options.getInteger('valor') == null) {
+            embed
+                .setTitle('Volume atual')
+                .setDescription(`🔊 O volume atual da queue é: ${queue.volume * 10}%`);
+        } else if (interaction.options.getInteger('valor')) {
+            const args = interaction.options.getInteger('valor');
+            queue.setVolume(args / 10);
+            embed
+                .setTitle('Volume ajustado')
+                .setDescription(`🔊 Volume ajustado para: ${args}%`);
+        } else {
+            embed
+                .setTitle("Erro")
+                .setDescription(`Deu erro`);
+            console.log(interaction);
+        }
 
         await interaction.editReply({
             embeds: [embed],

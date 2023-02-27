@@ -24,7 +24,12 @@ client.player = new Player(client, {
 		quality: "highestaudio",
 		highWaterMark: 1 << 25,
 	},
+	initialVolume: 10,
 	smoothVolume: false,
+	leaveOnStop: false,
+	autoSelfDeaf: true,
+	leaveOnEmptyCooldown: 60000,
+	leaveOnEndCooldown: 60000,
 });
 
 const commandsPath = path.join(__dirname, 'commands');

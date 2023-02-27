@@ -63,7 +63,7 @@ module.exports = {
                 });
                 if (!queue.connection) await queue.connect(interaction.member.voice.channel);
             } catch (error) {
-                return interaction.editReply({
+                return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(0xFF0000)
