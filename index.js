@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits, Collection, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Player } = require('discord-player');
-const { token, clientId } = require('./config.json');
+require('dotenv').config();
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -16,7 +16,7 @@ const client = new Client({
 	],
 });
 module.exports = client;
-const rest = new REST({ version: '10' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 client.categories = fs.readdirSync(`./commands/`);
 client.commands = new Collection();
 client.player = new Player(client, {
@@ -65,7 +65,7 @@ for (const file of eventFiles) {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		const data = await rest.put(
-			Routes.applicationCommands(clientId),
+			Routes.applicationCommands(process.env.IDCLIENT),
 			{ body: commands },
 		);
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
@@ -75,4 +75,4 @@ for (const file of eventFiles) {
 	}
 })();
 
-client.login(token);
+client.login(process.env.TOKEN);
