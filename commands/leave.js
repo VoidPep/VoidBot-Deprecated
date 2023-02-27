@@ -21,7 +21,7 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle("Adeus 👋")
-                    .setDescription("Até outra hora")
+                    .setDescription(`**Considere me apoiar clicando [aqui](https://nubank.com.br/pagar/cz18t/xf8QJeie9j)**`)
                     .setColor(0x0099FF)
                     .setTimestamp()
                     .setThumbnail(`${client.user.avatarURL()}`),
