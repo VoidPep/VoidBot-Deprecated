@@ -1,7 +1,6 @@
 const { Client, GatewayIntentBits, Collection, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Player } = require('discord-player');
-const keepAlive = require('./server');
 require('dotenv').config();
 
 const fs = require('node:fs');
@@ -18,7 +17,7 @@ const client = new Client({
 });
 module.exports = client;
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
-client.categories = fs.readdirSync(`/${process.cwd()}/commands/`);
+client.categories = fs.readdirSync(`./commands/`);
 client.commands = new Collection();
 client.player = new Player(client, {
 	ytdlOptions: {
@@ -34,7 +33,7 @@ client.player = new Player(client, {
 });
 
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(`/${process.cwd()}/commands`).filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 client.on('ready', () => {
 	client.user.setActivity('VoidBot', { type: 2 });
@@ -50,7 +49,7 @@ for (const file of commandFiles) {
 
 }
 const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(`/${process.cwd()}/events`).filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
@@ -77,4 +76,3 @@ for (const file of eventFiles) {
 })();
 
 client.login(process.env.TOKEN);
-keepAlive();
