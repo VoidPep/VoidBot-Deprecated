@@ -38,6 +38,7 @@ module.exports = {
 
         let ehPlaylist = false;
         let result;
+        let song;
 
         if (linkParts[0] === 'https://www.youtube.com/playlist?list') {
             try {
@@ -113,7 +114,6 @@ module.exports = {
                 });
             }
         }
-        let song;
         if (result.length !== 0 || result) {
             if (!ehPlaylist) {
                 song = result.tracks[0];
