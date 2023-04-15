@@ -13,6 +13,7 @@ module.exports = {
                 .setRequired(true)),
 
     run: async ({ client, interaction }) => {
+        let queue = await client.player.getQueue(interaction.guild);
         await interaction.deferReply();
         const embed = new EmbedBuilder()
             .setTimestamp()
@@ -27,7 +28,6 @@ module.exports = {
             });
         }
         let setDefaultVolume;
-        let queue = await client.player.getQueue(interaction.guild);
         if (!queue) {
             queue = await client.player.createQueue(interaction.guild);
             setDefaultVolume = true;

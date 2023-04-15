@@ -6,18 +6,17 @@ module.exports = {
         .setDescription('Pula para próxima música'),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
-        const queue = client.player.getQueue(interaction.guildId);
-
-        if (!queue) return await interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription("❌ Sem músicas na lista de reprodução")
-                    .setColor(0x0099FF),
-            ],
-        });
-
+        const queue = client.player.getQueue(interaction.guild);
+        if (!queue) {
+            return await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription("❌ Sem músicas na lista de reprodução")
+                        .setColor(0x0099FF),
+                ],
+            });
+        }
         const currentSong = queue.current;
-
         queue.skip();
 
         await interaction.editReply({

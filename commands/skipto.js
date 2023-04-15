@@ -12,7 +12,8 @@ module.exports = {
                 .setRequired(true)),
     run: async ({ client, interaction }) => {
         await interaction.deferReply();
-        const queue = client.player.getQueue(interaction.guildId);
+        const queue = client.player.getQueue(interaction.guild);
+
 
         if (!queue) return await interaction.editReply({
             embeds: [
@@ -23,12 +24,8 @@ module.exports = {
                     .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL()}` }),
             ],
         });
-
-        const trackNum = interaction.options.getNumber("pos");
-        const currentSong = queue.current;
-
-        if (trackNum > queue.tracks.length) {
-            await interaction.editReply({
+        else if (trackNum > queue.tracks.length) {
+            return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription("❌ Posição da fila inválida")
@@ -38,6 +35,8 @@ module.exports = {
                 ],
             });
         }
+        const trackNum = interaction.options.getNumber("pos");
+        const currentSong = queue.current;
 
         queue.skipTo(trackNum - 1);
 
